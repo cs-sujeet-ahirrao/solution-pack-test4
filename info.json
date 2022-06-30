@@ -1,0 +1,66 @@
+{
+    "fsrMinCompatibility": "7.2.0",
+    "date": "2022-06-02T10:01:59+00:00",
+    "exported_from": "master.fortisoar.in",
+    "exported_by": "Playbook",
+    "contents": {
+        "picklistNames": [
+            {
+                "name": "PR Status"
+            }
+        ],
+        "modules": {
+            "alerts": {
+                "name": "Alerts",
+                "apiName": "alerts"
+            },
+            "": {
+                "name": "Change Request",
+                "apiName": "change_requests"
+            }
+        },
+        "viewTemplates": {
+            "alerts": {
+                "name": "Alerts",
+                "apiName": "alerts",
+                "views": [
+                    "list",
+                    "detail",
+                    "form",
+                    "settings"
+                ]
+            },
+            "change_requests": {
+                "name": "Change Request",
+                "apiName": "change_requests",
+                "views": [
+                    "list",
+                    "detail",
+                    "form"
+                ]
+            }
+        },
+        "playbooks": [
+            {
+                "name": "01 - Drafts"
+            },
+            {
+                "name": "02 - Use Case - Malware Response Using SIEM and EDR Solutions"
+            }
+        ],
+        "globalVariables": [
+            {
+                "id": 17,
+                "name": "Demo_mode",
+                "value": "true",
+                "default_value": "true"
+            },
+            {
+                "id": 16,
+                "name": "QRadarTimeZone",
+                "value": "UTC",
+                "default_value": "UTC"
+            }
+        ]
+    }
+}

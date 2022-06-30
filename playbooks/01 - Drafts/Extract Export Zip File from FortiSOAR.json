@@ -1,0 +1,169 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Extract Export Zip File from FortiSOAR",
+    "aliasName": null,
+    "tag": null,
+    "description": null,
+    "isActive": true,
+    "debug": false,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [
+        "export_template_name",
+        "export_file_name"
+    ],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/4dc865c8-012e-4326-8be5-252b723ea734",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/5edae2f6-337a-425d-87c6-36a8621eb2c4",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "step_variables": {
+                    "input": {
+                        "params": []
+                    }
+                }
+            },
+            "status": null,
+            "top": "30",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/b348f017-9a94-471f-87f8-ce88b6a7ad62",
+            "uuid": "5edae2f6-337a-425d-87c6-36a8621eb2c4"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Template Details",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/3\/export_templates",
+                    "body": "",
+                    "method": "GET"
+                },
+                "version": "3.2.1",
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": {
+                    "template_name": "{{vars.result.data['hydra:member'] | json_query(\"[?name == '\"+vars.export_template_name+\"']\")}}"
+                }
+            },
+            "status": null,
+            "top": "165",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "f1966ab4-6fdd-4d8f-834a-705a5e31c27a"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Job UUID",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/export?fileName={{vars.export_file_name}}.zip&template={{vars.template_name[0].uuid}}",
+                    "body": "",
+                    "method": "PUT"
+                },
+                "version": "3.2.1",
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "0db56fa7-0277-4fd3-a81e-f44052e079ba"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Job Details",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/3\/export_jobs\/{{vars.steps.Get_Export_Job_UUID.data.jobUuid}}",
+                    "body": "",
+                    "method": "GET"
+                },
+                "version": "3.2.1",
+                "do_until": {
+                    "delay": 15,
+                    "retries": 3,
+                    "condition": "{{vars.result.data.status==\"Export Complete\"}}"
+                },
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "435",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "18f5690b-9ab0-4819-87da-9051a6bf639b"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Return File IRI",
+            "description": null,
+            "arguments": {
+                "file_iri": "{{vars.steps.Get_Export_Job_Details.data.file['@id']}}"
+            },
+            "status": null,
+            "top": "570",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "uuid": "3be30e4f-5744-4c9e-8030-98b14b9c7709"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Export Template Details -> Get Export Job UUID",
+            "targetStep": "\/api\/3\/workflow_steps\/0db56fa7-0277-4fd3-a81e-f44052e079ba",
+            "sourceStep": "\/api\/3\/workflow_steps\/f1966ab4-6fdd-4d8f-834a-705a5e31c27a",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "03187bec-0253-40ce-9b8a-e32fe4b83b93"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Export Job UUID -> Get Export Job Details",
+            "targetStep": "\/api\/3\/workflow_steps\/18f5690b-9ab0-4819-87da-9051a6bf639b",
+            "sourceStep": "\/api\/3\/workflow_steps\/0db56fa7-0277-4fd3-a81e-f44052e079ba",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "007193f6-913f-441d-a465-fe1937e4fd1f"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Get Export Template Details",
+            "targetStep": "\/api\/3\/workflow_steps\/f1966ab4-6fdd-4d8f-834a-705a5e31c27a",
+            "sourceStep": "\/api\/3\/workflow_steps\/5edae2f6-337a-425d-87c6-36a8621eb2c4",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "1f4cbfb3-417d-4c46-91bf-ee7dee53dacc"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Export Job Details -> Return File IRI",
+            "targetStep": "\/api\/3\/workflow_steps\/3be30e4f-5744-4c9e-8030-98b14b9c7709",
+            "sourceStep": "\/api\/3\/workflow_steps\/18f5690b-9ab0-4819-87da-9051a6bf639b",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "21345c34-3ab4-4c53-a69c-921458a7dbeb"
+        }
+    ],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "uuid": "32281666-bee9-4544-a94a-d07687847d54",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": []
+}

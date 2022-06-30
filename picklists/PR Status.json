@@ -1,0 +1,30 @@
+{
+    "@context": "\/api\/3\/contexts\/PicklistName",
+    "@id": "\/api\/3\/picklist_names\/076399f7-8135-4b0c-bed0-8a1325231ea1",
+    "@type": "PicklistName",
+    "name": "PR Status",
+    "system": false,
+    "picklists": [
+        {
+            "@id": "\/api\/3\/picklists\/925c8a6d-1b5f-43e6-a65a-0b465188cbb0",
+            "@type": "Picklist",
+            "itemValue": "Open",
+            "orderIndex": 0,
+            "color": "#c42323",
+            "icon": null,
+            "listName": "\/api\/3\/picklist_names\/076399f7-8135-4b0c-bed0-8a1325231ea1",
+            "uuid": "925c8a6d-1b5f-43e6-a65a-0b465188cbb0"
+        },
+        {
+            "@id": "\/api\/3\/picklists\/8e8d3689-92ec-4229-844b-50a45be3cd72",
+            "@type": "Picklist",
+            "itemValue": "Resolved",
+            "orderIndex": 1,
+            "color": "#52c91a",
+            "icon": null,
+            "listName": "\/api\/3\/picklist_names\/076399f7-8135-4b0c-bed0-8a1325231ea1",
+            "uuid": "8e8d3689-92ec-4229-844b-50a45be3cd72"
+        }
+    ],
+    "uuid": "076399f7-8135-4b0c-bed0-8a1325231ea1"
+}

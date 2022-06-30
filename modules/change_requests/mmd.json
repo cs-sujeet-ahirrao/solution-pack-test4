@@ -1,0 +1,635 @@
+{
+    "@id": "\/api\/3\/staging_model_metadatas\/cb4479a9-a968-44e0-bd7b-59269062e530",
+    "uuid": "cb4479a9-a968-44e0-bd7b-59269062e530",
+    "descriptions": {
+        "singular": "Change Request",
+        "plural": "Change Request"
+    },
+    "type": "change_requests",
+    "attributes": [
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/76ac0b61-2bb2-42c0-8848-86c54f9ca122",
+            "@type": "AttributeMetadata",
+            "type": "comments",
+            "name": "comments",
+            "length": null,
+            "orderIndex": 2,
+            "formType": "manyToMany",
+            "dataSource": {
+                "model": "comments"
+            },
+            "searchable": false,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": false,
+            "collection": true,
+            "inversedField": "changeRequests",
+            "ownsRelationship": true,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": [],
+            "dataSourceFilters": null,
+            "defaultValue": null,
+            "tooltip": null,
+            "visibility": true,
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "76ac0b61-2bb2-42c0-8848-86c54f9ca122",
+            "displayName": "{{ comments }}",
+            "descriptions": {
+                "singular": "Comments"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/31cf6dd6-23d8-4a26-8c1c-87b6b08a13c8",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "unitTestCases",
+            "length": null,
+            "orderIndex": 18,
+            "formType": "richtext",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": false,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": null,
+            "tooltip": null,
+            "visibility": true,
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "31cf6dd6-23d8-4a26-8c1c-87b6b08a13c8",
+            "displayName": "{{ unitTestCases }}",
+            "descriptions": {
+                "singular": "Unit Test Cases"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/ab6d5da8-7007-4dcd-8691-d2e607763528",
+            "@type": "AttributeMetadata",
+            "type": "picklists",
+            "name": "pRStatus",
+            "length": null,
+            "orderIndex": 15,
+            "formType": "picklist",
+            "dataSource": {
+                "model": "picklists",
+                "query": {
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "field": "listName__name",
+                            "operator": "eq",
+                            "value": "PR Status"
+                        }
+                    ],
+                    "sort": [
+                        {
+                            "field": "orderIndex",
+                            "direction": "ASC"
+                        }
+                    ]
+                },
+                "displayConditions": {
+                    "925c8a6d-1b5f-43e6-a65a-0b465188cbb0": {
+                        "visibility": "visible",
+                        "conditions": null
+                    },
+                    "8e8d3689-92ec-4229-844b-50a45be3cd72": {
+                        "visibility": "visible",
+                        "conditions": null
+                    }
+                }
+            },
+            "searchable": false,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": true,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": null,
+            "tooltip": null,
+            "visibility": true,
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": true,
+            "uuid": "ab6d5da8-7007-4dcd-8691-d2e607763528",
+            "displayName": "{{ pRStatus }}",
+            "descriptions": {
+                "singular": "PR Status"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/812d84f1-4705-490b-b2bc-e9a3ea90f3dd",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "gitReleaseTag",
+            "length": null,
+            "orderIndex": 14,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": true,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": [
+                {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "field": "gitReleaseTag",
+                            "operator": "isnull",
+                            "_operator": "isnull",
+                            "value": "false",
+                            "type": "primitive"
+                        }
+                    ]
+                }
+            ],
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "812d84f1-4705-490b-b2bc-e9a3ea90f3dd",
+            "displayName": "{{ gitReleaseTag }}",
+            "descriptions": {
+                "singular": "Release Tag"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/a67d710c-2ae7-4a37-a47e-61690eaa9359",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "gitBranch",
+            "length": null,
+            "orderIndex": 12,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": true,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": [
+                {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "field": "gitBranch",
+                            "operator": "isnull",
+                            "_operator": "isnull",
+                            "value": "false",
+                            "type": "primitive"
+                        }
+                    ]
+                }
+            ],
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "a67d710c-2ae7-4a37-a47e-61690eaa9359",
+            "displayName": "{{ gitBranch }}",
+            "descriptions": {
+                "singular": "New Branch"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/da119f3f-2ed9-4f8b-a6ed-be4704e762ae",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "gitRepositoryURL",
+            "length": null,
+            "orderIndex": 6,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": true,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": [
+                {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "field": "gitRepositoryURL",
+                            "operator": "isnull",
+                            "_operator": "isnull",
+                            "value": "false",
+                            "type": "primitive"
+                        }
+                    ]
+                }
+            ],
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "da119f3f-2ed9-4f8b-a6ed-be4704e762ae",
+            "displayName": "{{ gitRepositoryURL }}",
+            "descriptions": {
+                "singular": "Repository URL"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/21e9bb6c-0170-4951-9853-aff106957123",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "gitRepositoryName",
+            "length": null,
+            "orderIndex": 7,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": true,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": true,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": true,
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "21e9bb6c-0170-4951-9853-aff106957123",
+            "displayName": "{{ gitRepositoryName }}",
+            "descriptions": {
+                "singular": "Repository Name"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/78963c74-b014-42ed-8513-965a909db07f",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "changeDescription",
+            "length": null,
+            "orderIndex": 5,
+            "formType": "richtext",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": false,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": true,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": null,
+            "tooltip": null,
+            "visibility": true,
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "78963c74-b014-42ed-8513-965a909db07f",
+            "displayName": "{{ changeDescription }}",
+            "descriptions": {
+                "singular": "CR Description"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/e06b56de-6c8a-4669-bbb8-5189412a34c1",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "changeSummary",
+            "length": null,
+            "orderIndex": 4,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": true,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": true,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": true,
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "e06b56de-6c8a-4669-bbb8-5189412a34c1",
+            "displayName": "{{ changeSummary }}",
+            "descriptions": {
+                "singular": "CR Summary"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/157f9004-7773-4687-97aa-f4af52511181",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "gitContributor",
+            "length": null,
+            "orderIndex": 11,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": true,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": true,
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "157f9004-7773-4687-97aa-f4af52511181",
+            "displayName": "{{ gitContributor }}",
+            "descriptions": {
+                "singular": "Contributor"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/8b80f61e-e7ff-4bab-b54e-76afcbe3e8e1",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "latestCommitID",
+            "length": null,
+            "orderIndex": 17,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": false,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": false,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": true,
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "8b80f61e-e7ff-4bab-b54e-76afcbe3e8e1",
+            "displayName": "{{ latestCommitID }}",
+            "descriptions": {
+                "singular": "Latest Commit ID"
+            }
+        },
+        {
+            "@id": "\/api\/3\/attribute_metadatas\/a1418000-ec7c-4468-b26f-85b1cdedfe3f",
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "pRReviewer",
+            "length": null,
+            "orderIndex": 16,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": true,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": true,
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "uuid": "a1418000-ec7c-4468-b26f-85b1cdedfe3f",
+            "displayName": "{{ pRReviewer }}",
+            "descriptions": {
+                "singular": "PR Reviewers"
+            }
+        }
+    ],
+    "tableName": "change_request",
+    "displayName": "{{ gitRepositoryName }}"
+}

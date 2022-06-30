@@ -1,0 +1,1092 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Push Change Request",
+    "aliasName": null,
+    "tag": null,
+    "description": null,
+    "isActive": true,
+    "debug": true,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/4dc865c8-012e-4326-8be5-252b723ea734",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/6a2ee989-6640-4124-8780-60e94d53606b",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "route": "05621d81-d1f8-4483-8a78-374790481e8c",
+                "resources": [
+                    "change_requests"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": "{{vars.input.records}}"
+                    }
+                },
+                "displayConditions": {
+                    "alerts": {
+                        "sort": [],
+                        "limit": 30,
+                        "logic": "AND",
+                        "filters": []
+                    },
+                    "change_requests": {
+                        "sort": [],
+                        "limit": 30,
+                        "logic": "AND",
+                        "filters": []
+                    }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": false,
+                "singleRecordExecution": false
+            },
+            "status": null,
+            "top": "30",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+            "uuid": "6a2ee989-6640-4124-8780-60e94d53606b"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "repo_url": "{{vars.input.records[0].gitRepositoryURL}}",
+                "change_id": "{{vars.input.records[0].id}}",
+                "repo_name": "{{vars.input.records[0].gitRepositoryName}}",
+                "new_branch": "branch-CR{{vars.input.records[0].id}}",
+                "pr_reviewer": "{{vars.input.records[0].pRReviewer}}",
+                "change_summary": "{{vars.input.records[0].changeSummary}}",
+                "org_repo_owner": "{{vars.input.records[0].organizationRepositoryOwner}}",
+                "checkout_branch": "{{vars.input.records[0].sourceControlCheckoutBranch}}",
+                "export_file_name": "FortiSOAR Export-{{arrow.utcnow().int_timestamp}}",
+                "public_repo_owner": "{{vars.input.records[0].publicRepositoryOwner}}",
+                "change_description": "{{vars.input.records[0].changeDescription}}",
+                "export_template_name": "{{vars.input.records[0].cRTemplateName}}",
+                "change_request_summary": "{{vars.input.records[0].changeSummary}}"
+            },
+            "status": null,
+            "top": "165",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "uuid": "24cc371e-ac5d-4994-9b03-3947b68bbd08"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Export Configuration",
+            "description": null,
+            "arguments": {
+                "type": "InputBased",
+                "input": {
+                    "schema": {
+                        "title": "Export Configuration",
+                        "description": "Export the Configuration which you want to Checkin in GitHub.\nPlease provide the Export Template Name and File Name. ",
+                        "inputVariables": [
+                            {
+                                "name": "exportTemplateName",
+                                "type": "string",
+                                "label": "Export Template Name",
+                                "tooltip": "",
+                                "dataType": "text",
+                                "formType": "text",
+                                "required": true,
+                                "_expanded": true,
+                                "defaultValue": "{{vars.template_name}}",
+                                "_previousName": "exportTemplateNameConfigurationID",
+                                "useRecordFieldDefault": false
+                            },
+                            {
+                                "name": "exportFileName",
+                                "type": "string",
+                                "label": "Export File Name",
+                                "tooltip": "",
+                                "dataType": "text",
+                                "formType": "text",
+                                "required": true,
+                                "_expanded": true,
+                                "defaultValue": "{{vars.file_name}}",
+                                "_previousName": "exportFile",
+                                "useRecordFieldDefault": false
+                            }
+                        ]
+                    }
+                },
+                "record": "",
+                "resources": "change_requests",
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": false,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Extract Config",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/6b867f1d-8fb7-43e1-841d-fd7eb8bdf443"
+                        }
+                    ],
+                    "duplicateOption": false
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                }
+            },
+            "status": null,
+            "top": "30",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "uuid": "b84394db-0792-4223-918a-fdf170f5e26a"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Clone Repository",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "name": "{{vars.repo_name}}",
+                    "clone_zip": false
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>\"{{vars.repo_name}}\" is Cloned under the path \/tmp\/{{vars.repo_name}} location into FortiSOAR.&nbsp;<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "clone_repository",
+                "operationTitle": "Clone Repository",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "975",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "6b867f1d-8fb7-43e1-841d-fd7eb8bdf443"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Template Details",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/3\/export_templates",
+                    "body": "",
+                    "method": "GET"
+                },
+                "version": "3.2.1",
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": {
+                    "template_name": "{{vars.result.data['hydra:member'] | json_query(\"[?name == '\"+vars.export_template_name+\"']\")}}"
+                }
+            },
+            "status": null,
+            "top": "30",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "f8b3eb03-d69e-4983-b788-04bb087b43bc"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Job UUID",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/export?fileName={{vars.export_file_name}}.zip&template={{vars.template_name[0].uuid}}",
+                    "body": "",
+                    "method": "PUT"
+                },
+                "version": "3.2.1",
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "165",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "4a24984e-c8e6-4341-84d0-3e6db19bc9f5"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Job Details",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/3\/export_jobs\/{{vars.steps.Get_Export_Job_UUID.data.jobUuid}}",
+                    "body": "",
+                    "method": "GET"
+                },
+                "version": "3.2.1",
+                "do_until": {
+                    "delay": 15,
+                    "retries": 3,
+                    "condition": "{{vars.result.data.status==\"Export Complete\"}}"
+                },
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "def12582-25b7-4806-bded-2f7b80f9aebd"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Apply Changes to Local Repository",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "file_iri": "{{vars.steps.Extract_Exported_Zip_File_from_FortiSOAR.file_iri}}",
+                    "clone_path": "{{vars.steps.Clone_Repository.data.path}}"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Check-in the Exported FortiSOAR Template file \"{{vars.export_template_name}}\" into the Local Repository located at FortiSOAR (\/tmp\/{{vars.repo_name}})<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "update_clone_repository",
+                "operationTitle": "Update Clone Repository",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "1245",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "35bb300b-c35d-41ae-bdb0-90404061e5b1"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Push Local Repo into GitHub",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "name": "{{vars.repo_name}}",
+                    "branch": "{{vars.new_branch}}",
+                    "clone_path": "{{vars.steps.Clone_Repository.data.path}}",
+                    "commit_message": "{{vars.steps.Specify_Commit_Message.input.commitMessage}}"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Push the FortiSOAR Local Repository \"\/tmp\/{{vars.repo_name}}\" into the GitHub under the Repository \"{{vars.repo_name}}\"<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "push_repository",
+                "operationTitle": "Push Repository",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "1515",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "b9f500db-86d3-47d1-bef3-e9b56ddd51d3"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Pull Request",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "base": "{{vars.checkout_branch}}",
+                    "body": "{{vars.steps.Specify_PR_Title_and_Comments.input.comments}}",
+                    "head": "{{vars.public_repo_owner}}:{{vars.new_branch}}",
+                    "repo": "{{vars.repo_name}}",
+                    "draft": false,
+                    "owner": "{{vars.public_repo_owner}}",
+                    "title": "{{vars.steps.Specify_PR_Title_and_Comments.input.title}}",
+                    "maintainer_can_modify": true
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Pull Request \"{{vars.steps.Specify_PR_Title_and_Comments.input.title}}\" is created.<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "create_pull_request",
+                "operationTitle": "Create Pull Request",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "1785",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "a472aa2c-1f6d-46b2-a9bb-514af058fc80"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Wait for Approve Pull Request",
+            "description": null,
+            "arguments": {
+                "type": "DecisionBased",
+                "input": {
+                    "schema": {
+                        "title": "Pull Request",
+                        "description": "Is the Pull Request is Approved",
+                        "inputVariables": []
+                    }
+                },
+                "record": "",
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Pull Request \"{{vars.steps.Specify_PR_Title_and_Comments.input.title}}\" is approved by the \"{{vars.pr_reviewer}}\" Reviewer<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "resources": "change_requests",
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": false,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Yes",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/9f060468-402b-4a84-9f32-d48332dea21e"
+                        }
+                    ],
+                    "duplicateOption": false
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                }
+            },
+            "status": null,
+            "top": "2055",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "uuid": "537c2b19-4627-49e8-9da5-515f88fd4d73"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Merge Pull Request",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "sha": "",
+                    "repo": "{{vars.repo_name}}",
+                    "owner": "{{vars.public_repo_owner}}",
+                    "pull_number": "{{vars.steps.Create_Pull_Request.data.number}}",
+                    "commit_title": "{{vars.steps.Specify_PR_Title_and_Comments.input.title}}",
+                    "merge_method": "merge",
+                    "commit_message": "{{vars.steps.Specify_PR_Title_and_Comments.input.comments}}"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Pull Request \"{{vars.steps.Specify_PR_Title_and_Comments.input.title}}\" is Merged.<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "merge_pull_request",
+                "ignore_errors": true,
+                "operationTitle": "Merge Pull Request",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "2190",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "9f060468-402b-4a84-9f32-d48332dea21e"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Do you Want to Apply CR in Private Repo",
+            "description": null,
+            "arguments": {
+                "type": "DecisionBased",
+                "input": {
+                    "schema": {
+                        "title": "Apply Change Request on Private Repo or Public Repo",
+                        "description": "Please specify weather you want to checkin the Change Request in Organization Repository or Public Repository",
+                        "inputVariables": []
+                    }
+                },
+                "record": "{{ vars.input.records[0][\"@id\"] }}",
+                "resources": "change_requests",
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": true,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Public",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/3f64ab1d-d31d-49f6-a613-a418b5630f34"
+                        },
+                        {
+                            "option": "Organization",
+                            "step_iri": "\/api\/3\/workflow_steps\/190b467d-e3a8-4ee6-a418-3fc9eb7bfad9"
+                        }
+                    ],
+                    "duplicateOption": false
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                }
+            },
+            "status": null,
+            "top": "30",
+            "left": "1175",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "uuid": "fd787e64-c9c4-4d90-bcc2-f98a6914062e"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Public Repository",
+            "description": null,
+            "arguments": {
+                "arguments": {
+                    "cr_iri": "{{vars.input.records[0]['@id']}}",
+                    "repo_name": "{{vars.repo_name}}",
+                    "new_branch": "{{vars.new_branch}}",
+                    "repo_owner": "{{vars.public_repo_owner}}",
+                    "change_summary": "{{vars.change_request_summary}}",
+                    "checkout_branch": "{{vars.checkout_branch}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "workflowReference": "\/api\/3\/workflows\/45b041bd-62ff-49b6-aa28-435e5a6fb145"
+            },
+            "status": null,
+            "top": "840",
+            "left": "650",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "uuid": "3f64ab1d-d31d-49f6-a613-a418b5630f34"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Fork Organization Repository",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "repo": "{{vars.repo_name}}",
+                    "owner": "{{vars.org_repo_owner}}",
+                    "organization": ""
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Fork the \"{{vars.repo_name}}\" Organization Repository<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "fork_organization_repository",
+                "operationTitle": "Fork a Organization Repository",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "435",
+            "left": "1000",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "190b467d-e3a8-4ee6-a418-3fc9eb7bfad9"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Extract Exported Zip File from FortiSOAR",
+            "description": null,
+            "arguments": {
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Extracting the FortiSOAR Export Zip File \"{{vars.export_template_name}}\".&nbsp;<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "arguments": {
+                    "export_file_name": "{{vars.export_file_name}}",
+                    "export_template_name": "{{vars.export_template_name}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "workflowReference": "\/api\/3\/workflows\/32281666-bee9-4544-a94a-d07687847d54"
+            },
+            "status": null,
+            "top": "1110",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "uuid": "663064c9-2adc-48c6-b42c-d0350b7f5576"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Specify Commit Message",
+            "description": null,
+            "arguments": {
+                "type": "InputBased",
+                "input": {
+                    "schema": {
+                        "title": "Specify Commit Message",
+                        "description": "Please specify the commit message for the change request \"{{vars.change_request_summary}}\" which you want to push into the \"{{vars.repo_name}}\" Git Repository under the branch \"{{vars.new_branch}}\"",
+                        "inputVariables": [
+                            {
+                                "name": "commitMessage",
+                                "type": "string",
+                                "label": "Commit Message",
+                                "tooltip": "",
+                                "dataType": "text",
+                                "formType": "text",
+                                "required": true,
+                                "_expanded": true,
+                                "defaultValue": null,
+                                "_previousName": "commitMessa",
+                                "useRecordFieldDefault": false
+                            }
+                        ]
+                    }
+                },
+                "record": "{{ vars.input.records[0][\"@id\"] }}",
+                "resources": "change_requests",
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": true,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Commit",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/b9f500db-86d3-47d1-bef3-e9b56ddd51d3"
+                        }
+                    ],
+                    "duplicateOption": false
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                }
+            },
+            "status": null,
+            "top": "1380",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "uuid": "8e120239-5f6e-48b8-9b0d-1e2c1aff8419"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Specify PR Title and Comments",
+            "description": null,
+            "arguments": {
+                "type": "InputBased",
+                "input": {
+                    "schema": {
+                        "title": "Pull Request Title and Comments",
+                        "description": "Please specify the Title and Comments for the Pull Request",
+                        "inputVariables": [
+                            {
+                                "name": "title",
+                                "type": "string",
+                                "label": "Title",
+                                "tooltip": "",
+                                "dataType": "text",
+                                "formType": "text",
+                                "required": true,
+                                "_expanded": true,
+                                "defaultValue": null,
+                                "_previousName": "titl",
+                                "useRecordFieldDefault": false
+                            },
+                            {
+                                "name": "comments",
+                                "type": "string",
+                                "label": "Comments",
+                                "tooltip": "",
+                                "dataType": "text",
+                                "formType": "text",
+                                "required": false,
+                                "_expanded": true,
+                                "defaultValue": null,
+                                "_previousName": "",
+                                "useRecordFieldDefault": false
+                            }
+                        ]
+                    }
+                },
+                "record": "{{ vars.input.records[0][\"@id\"] }}",
+                "resources": "change_requests",
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": true,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Submit",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/a472aa2c-1f6d-46b2-a9bb-514af058fc80"
+                        }
+                    ],
+                    "duplicateOption": false
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                }
+            },
+            "status": null,
+            "top": "1650",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "uuid": "2873cdf2-775e-4eca-b3fd-29a193c48c22"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Add PR Reviewers",
+            "description": null,
+            "arguments": {
+                "type": "InputBased",
+                "input": {
+                    "schema": {
+                        "title": "Add Reviewer for Pull Request",
+                        "description": "Please add the reviewers for the following Pull Request\n{{vars.steps.Create_Pull_Request.data.url}}",
+                        "inputVariables": [
+                            {
+                                "name": "reviewers",
+                                "type": "string",
+                                "label": "Reviewers",
+                                "tooltip": "Comma separated user names that will be requested.",
+                                "dataType": "text",
+                                "formType": "text",
+                                "required": false,
+                                "_expanded": true,
+                                "defaultValue": "octocat,hubot,other_user",
+                                "_previousName": "eviewers",
+                                "visibilityQuery": {
+                                    "sort": [],
+                                    "limit": 30,
+                                    "logic": "AND",
+                                    "filters": []
+                                },
+                                "useRecordFieldDefault": false,
+                                "_addVisibilityConditions": true
+                            }
+                        ]
+                    }
+                },
+                "record": "{{ vars.input.records[0][\"@id\"] }}",
+                "resources": "change_requests",
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": true,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Add",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/02317834-e33e-493a-8309-2dec7669966d"
+                        }
+                    ],
+                    "duplicateOption": false
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                }
+            },
+            "status": null,
+            "top": "30",
+            "left": "1525",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "uuid": "e0c87e5b-b5c7-4269-ada5-e0a541dcaaec"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Add Reviewers for PR",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "repo": "{{vars.repo_name}}",
+                    "owner": "{{vars.public_repo_owner}}",
+                    "reviewers": "{{vars.pr_reviewer}}",
+                    "pull_number": "{{vars.steps.Create_Pull_Request.data.number}}",
+                    "team_reviewers": ""
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Added \"{{vars.pr_reviewer}}\" as Pull Request Reviewers.<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "add_reviewers",
+                "ignore_errors": true,
+                "operationTitle": "Add Reviewers for a Pull Request",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "1920",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "02317834-e33e-493a-8309-2dec7669966d"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Has Public Repository",
+            "description": null,
+            "arguments": {
+                "conditions": [
+                    {
+                        "option": "Public",
+                        "step_iri": "\/api\/3\/workflow_steps\/3f64ab1d-d31d-49f6-a613-a418b5630f34",
+                        "condition": "{{ vars.input.records[0].repositoryOwnerType.itemValue == 'Public' }}",
+                        "step_name": "Create Public Repository"
+                    },
+                    {
+                        "option": "Organization",
+                        "default": true,
+                        "step_iri": "\/api\/3\/workflow_steps\/190b467d-e3a8-4ee6-a418-3fc9eb7bfad9",
+                        "step_name": "Fork Organization Repository"
+                    }
+                ]
+            },
+            "status": null,
+            "top": "300",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/12254cf5-5db7-4b1a-8cb1-3af081924b28",
+            "uuid": "65e19e46-2226-4243-a334-eb2a79f8a055"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "List Repository Branches",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "page": 1,
+                    "repo": "{{vars.repo_name}}",
+                    "owner": "{{vars.org_repo_owner}}",
+                    "per_page": 100,
+                    "protected": false
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "list_branches",
+                "operationTitle": "List Branches",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "is_branch_exist": "{% if vars.result.data | json_query(\"[?name=='\"+vars.new_branch+\"']\") %}true{% else %}false{% endif %}"
+                }
+            },
+            "status": null,
+            "top": "570",
+            "left": "1000",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "67aa2893-3a5a-4ea7-9c97-adfa4e6f7ffa"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Branch",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "when": "{{vars.is_branch_exist is not true}}",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "sha": "{{vars.steps.Get_Branch_Revision.data.object.sha}}",
+                    "base": "{{vars.checkout_branch}}",
+                    "name": "{{vars.repo_name}}",
+                    "repo": "{{vars.repo_name}}",
+                    "owner": "{{vars.public_repo_owner}}",
+                    "checkout_branch": "Branch Name",
+                    "new_branch_name": "{{vars.new_branch}}"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>New Branch \"{{vars.new_branch}}\" is created under the base branch \"{{vars.checkout_branch}}\"<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "create_branch",
+                "operationTitle": "Create Branch",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "705",
+            "left": "1000",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "c4885122-d7e9-41dc-a8f2-7eca1990821a"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Update New Branch Info",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "gitBranch": "{{vars.new_branch}}"
+                },
+                "_showJson": false,
+                "operation": "Append",
+                "collection": "{{vars.input.records[0]['@id']}}",
+                "__recommend": [],
+                "collectionType": "\/api\/3\/change_requests",
+                "fieldOperation": {
+                    "recordTags": "Append"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "840",
+            "left": "1000",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928722",
+            "uuid": "a93e24d0-7c88-4868-912d-a931e091a8a9"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Configuration",
+            "targetStep": "\/api\/3\/workflow_steps\/24cc371e-ac5d-4994-9b03-3947b68bbd08",
+            "sourceStep": "\/api\/3\/workflow_steps\/6a2ee989-6640-4124-8780-60e94d53606b",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "98d18ad8-d021-41d9-9fb1-cedc3044ed34"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Export Template Details -> Get Export Job UUID",
+            "targetStep": "\/api\/3\/workflow_steps\/4a24984e-c8e6-4341-84d0-3e6db19bc9f5",
+            "sourceStep": "\/api\/3\/workflow_steps\/f8b3eb03-d69e-4983-b788-04bb087b43bc",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "3e56af73-fd59-40d9-847b-c34804ea5693"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Export Job UUID -> Get Export Job Details",
+            "targetStep": "\/api\/3\/workflow_steps\/def12582-25b7-4806-bded-2f7b80f9aebd",
+            "sourceStep": "\/api\/3\/workflow_steps\/4a24984e-c8e6-4341-84d0-3e6db19bc9f5",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "d877a14d-5987-4e19-9750-485fa037e596"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Approve Pull Request -> Merge Pull Request",
+            "targetStep": "\/api\/3\/workflow_steps\/9f060468-402b-4a84-9f32-d48332dea21e",
+            "sourceStep": "\/api\/3\/workflow_steps\/537c2b19-4627-49e8-9da5-515f88fd4d73",
+            "label": "Yes",
+            "isExecuted": false,
+            "uuid": "a6c4d2ef-b8a3-4cdb-9a9e-8f3926832471"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Clone Repository -> Extract Change Request Zip File from FortiSOAR",
+            "targetStep": "\/api\/3\/workflow_steps\/663064c9-2adc-48c6-b42c-d0350b7f5576",
+            "sourceStep": "\/api\/3\/workflow_steps\/6b867f1d-8fb7-43e1-841d-fd7eb8bdf443",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "d287b1c3-fc55-44b5-bc32-e868f947a921"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Extract Change Request Zip File from FortiSOAR -> Apply Changes to Local Repository",
+            "targetStep": "\/api\/3\/workflow_steps\/35bb300b-c35d-41ae-bdb0-90404061e5b1",
+            "sourceStep": "\/api\/3\/workflow_steps\/663064c9-2adc-48c6-b42c-d0350b7f5576",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "6877b2c2-7dec-4315-9f61-bb58955dd787"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Apply Changes to Local Repository -> Specify Commit Message",
+            "targetStep": "\/api\/3\/workflow_steps\/8e120239-5f6e-48b8-9b0d-1e2c1aff8419",
+            "sourceStep": "\/api\/3\/workflow_steps\/35bb300b-c35d-41ae-bdb0-90404061e5b1",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "b0898ef5-cb38-404d-af40-10809a1a0c80"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Specify Commit Message -> Push Export Config into GitHub",
+            "targetStep": "\/api\/3\/workflow_steps\/b9f500db-86d3-47d1-bef3-e9b56ddd51d3",
+            "sourceStep": "\/api\/3\/workflow_steps\/8e120239-5f6e-48b8-9b0d-1e2c1aff8419",
+            "label": "Commit",
+            "isExecuted": false,
+            "uuid": "eb7851a8-8f04-41f2-8d51-7cdda043eaff"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Push Export Config into GitHub -> Copy of Specify Commit Message",
+            "targetStep": "\/api\/3\/workflow_steps\/2873cdf2-775e-4eca-b3fd-29a193c48c22",
+            "sourceStep": "\/api\/3\/workflow_steps\/b9f500db-86d3-47d1-bef3-e9b56ddd51d3",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "812018f3-6230-4d7b-8cd0-c1ae12ac01dc"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Copy of Specify Commit Message -> Create Pull Request",
+            "targetStep": "\/api\/3\/workflow_steps\/a472aa2c-1f6d-46b2-a9bb-514af058fc80",
+            "sourceStep": "\/api\/3\/workflow_steps\/2873cdf2-775e-4eca-b3fd-29a193c48c22",
+            "label": "Submit",
+            "isExecuted": false,
+            "uuid": "c6652a5e-7fef-4e77-bf39-f2961d17c96e"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Add Reviewers for PR -> Wait for Approve Pull Request",
+            "targetStep": "\/api\/3\/workflow_steps\/537c2b19-4627-49e8-9da5-515f88fd4d73",
+            "sourceStep": "\/api\/3\/workflow_steps\/02317834-e33e-493a-8309-2dec7669966d",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "e3f3cf9e-f282-4598-81a9-8286f75f04e2"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Pull Request -> Add Reviewers for PR",
+            "targetStep": "\/api\/3\/workflow_steps\/02317834-e33e-493a-8309-2dec7669966d",
+            "sourceStep": "\/api\/3\/workflow_steps\/a472aa2c-1f6d-46b2-a9bb-514af058fc80",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "86077ad8-3c18-4514-afa3-271b269f029c"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Has Public Repository -> Fork Organization Repository",
+            "targetStep": "\/api\/3\/workflow_steps\/190b467d-e3a8-4ee6-a418-3fc9eb7bfad9",
+            "sourceStep": "\/api\/3\/workflow_steps\/65e19e46-2226-4243-a334-eb2a79f8a055",
+            "label": "Organization",
+            "isExecuted": false,
+            "uuid": "2fcee510-ac89-459c-b277-4d7587c65caa"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "List Repository Branches -> Create Branch",
+            "targetStep": "\/api\/3\/workflow_steps\/c4885122-d7e9-41dc-a8f2-7eca1990821a",
+            "sourceStep": "\/api\/3\/workflow_steps\/67aa2893-3a5a-4ea7-9c97-adfa4e6f7ffa",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "b6ed76aa-df3d-4000-9199-f122b2d307fb"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Fork Organization Repository -> List Repository Branches",
+            "targetStep": "\/api\/3\/workflow_steps\/67aa2893-3a5a-4ea7-9c97-adfa4e6f7ffa",
+            "sourceStep": "\/api\/3\/workflow_steps\/190b467d-e3a8-4ee6-a418-3fc9eb7bfad9",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "c8b45d4a-ac38-4a8d-907f-676fee673215"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Has Public Repository",
+            "targetStep": "\/api\/3\/workflow_steps\/65e19e46-2226-4243-a334-eb2a79f8a055",
+            "sourceStep": "\/api\/3\/workflow_steps\/24cc371e-ac5d-4994-9b03-3947b68bbd08",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "1c531bb9-0140-4a6f-a2bb-726777862034"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Branch -> Update New Branch Info",
+            "targetStep": "\/api\/3\/workflow_steps\/a93e24d0-7c88-4868-912d-a931e091a8a9",
+            "sourceStep": "\/api\/3\/workflow_steps\/c4885122-d7e9-41dc-a8f2-7eca1990821a",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "ad02d58b-7fe3-4905-8f50-dee6a8246db7"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Update New Branch Info -> Clone Repository",
+            "targetStep": "\/api\/3\/workflow_steps\/6b867f1d-8fb7-43e1-841d-fd7eb8bdf443",
+            "sourceStep": "\/api\/3\/workflow_steps\/a93e24d0-7c88-4868-912d-a931e091a8a9",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "145cf13d-c519-4292-97e6-4383ca0964f4"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Has Public Repository -> Create Public Repository",
+            "targetStep": "\/api\/3\/workflow_steps\/3f64ab1d-d31d-49f6-a613-a418b5630f34",
+            "sourceStep": "\/api\/3\/workflow_steps\/65e19e46-2226-4243-a334-eb2a79f8a055",
+            "label": "Public",
+            "isExecuted": false,
+            "uuid": "daa3c3a3-f16b-433e-9774-f5b12681f11c"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Public Repository -> Clone Repository",
+            "targetStep": "\/api\/3\/workflow_steps\/6b867f1d-8fb7-43e1-841d-fd7eb8bdf443",
+            "sourceStep": "\/api\/3\/workflow_steps\/3f64ab1d-d31d-49f6-a613-a418b5630f34",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "5826884e-0355-498d-8031-8763bbd17833"
+        }
+    ],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "uuid": "22065270-8ec8-4559-bd8b-92aeca60e642",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": []
+}

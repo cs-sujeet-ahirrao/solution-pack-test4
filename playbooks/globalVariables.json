@@ -1,0 +1,14 @@
+[
+    {
+        "id": 17,
+        "name": "Demo_mode",
+        "value": "true",
+        "default_value": "true"
+    },
+    {
+        "id": 16,
+        "name": "QRadarTimeZone",
+        "value": "UTC",
+        "default_value": "UTC"
+    }
+]

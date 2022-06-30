@@ -1,0 +1,570 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Tesst",
+    "aliasName": null,
+    "tag": null,
+    "description": null,
+    "isActive": true,
+    "debug": true,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/4dc865c8-012e-4326-8be5-252b723ea734",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/625bec32-2bcf-4040-8414-dedc642a7146",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "route": "97499794-788b-4a8f-9fc6-f8d069802186",
+                "resources": [
+                    "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": "{{vars.input.records}}"
+                    }
+                },
+                "displayConditions": {
+                    "alerts": {
+                        "sort": [],
+                        "limit": 30,
+                        "logic": "AND",
+                        "filters": []
+                    }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+            },
+            "status": null,
+            "top": "30",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+            "uuid": "625bec32-2bcf-4040-8414-dedc642a7146"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Clone Repo",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "name": "Playbook_Repo",
+                    "clone_zip": false
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "clone_repository",
+                "operationTitle": "Clone Repository",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "560",
+            "left": "620",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "ab7ffb96-a376-4904-acd3-728709ae2556"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Push and commit",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "name": "solution-pack-cicd",
+                    "branch": "develop",
+                    "clone_path": "\/tmp\/solution-pack-cicd",
+                    "commit_message": "test"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "push_repository",
+                "operationTitle": "Push Repository",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "120",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "124bc05a-0074-42f8-bebf-73236eb7722a"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Delete User Repo",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "repo": "solution-pack-test",
+                    "owner": "cs-sujeet-ahirrao"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "delete_repository",
+                "operationTitle": "Delete Repository",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "20",
+            "left": "740",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "bdb8a0d2-58a8-4ac1-86dc-0c30edd72b07"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Upload File",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "filename": "connector-stix",
+                    "file_path": "connector-stix",
+                    "create_attachment": false
+                },
+                "version": "3.2.1",
+                "connector": "cyops_utilities",
+                "operation": "upload_file_to_cyops",
+                "operationTitle": "File: Upload a file in the system and Create an Attachment",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "240",
+            "left": "940",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "82382a9a-059b-48bb-9968-c02dcf52c1fe"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Jobs Details",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/query\/export_jobs?$limit=30$template='{{vars.exportTemplateName}}'",
+                    "body": "",
+                    "method": "POST"
+                },
+                "version": "3.2.1",
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "500",
+            "left": "140",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "9341edda-018a-4e12-adfc-079fb9650c51"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Config",
+            "description": null,
+            "arguments": {
+                "exportFileName": "FortiSOAR+Export-{{arrow.utcnow().int_timestamp}}",
+                "exportTemplateName": "FortiSOAR Export"
+            },
+            "status": null,
+            "top": "120",
+            "left": "1340",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "uuid": "9e6cb472-e155-4bd6-ba44-0eb9e8d0281b"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Job UUID",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/export?fileName=FortiSOAR+Export-202205160349.zip&template={{vars.template_name[0].uuid}}",
+                    "body": "",
+                    "method": "PUT"
+                },
+                "version": "3.2.1",
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "460",
+            "left": "1340",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "7cd2c814-fe0f-49ff-8fa2-78e311bc1714"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Job Details",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/3\/export_jobs\/{{vars.steps.Get_Export_Job_UUID.data.jobUuid}}",
+                    "body": "",
+                    "method": "GET"
+                },
+                "version": "3.2.1",
+                "do_until": {
+                    "delay": 15,
+                    "retries": 3,
+                    "condition": "{{vars.result.data.status==\"Export Complete\"}}"
+                },
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "640",
+            "left": "1340",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "db8e8160-f77a-4d37-abb3-6b819c731578"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Export Template Details",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "iri": "\/api\/3\/export_templates",
+                    "body": "",
+                    "method": "GET"
+                },
+                "version": "3.2.1",
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": {
+                    "template_name": "{{vars.result.data['hydra:member'] | json_query(\"[?name == '\"+vars.exportTemplateName+\"']\")}}"
+                }
+            },
+            "status": null,
+            "top": "280",
+            "left": "1340",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "uuid": "f2776bb2-9fa9-4988-adca-d52d7084119d"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create PR PR",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "base": "main",
+                    "body": "Test",
+                    "head": "cs-sujeet-ahirrao:branch-CR1",
+                    "repo": "Playbook_Repo",
+                    "draft": false,
+                    "owner": "cs-sujeet-ahirrao",
+                    "title": "Test",
+                    "maintainer_can_modify": true
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "create_pull_request",
+                "operationTitle": "Create Pull Request",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "240",
+            "left": "520",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "7399d6ea-e9a4-49ef-94f6-246f33884d99"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Merge PR",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "sha": "",
+                    "repo": "Playbook_Repo",
+                    "owner": "cs-sujeet-ahirrao",
+                    "pull_number": 1,
+                    "commit_title": "Test",
+                    "merge_method": "merge",
+                    "commit_message": "Test"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "merge_pull_request",
+                "operationTitle": "Merge Pull Request",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "360",
+            "left": "500",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "306bcc4b-ceca-4ead-987b-55c530f086eb"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "List Branches",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "page": "",
+                    "repo": "Playbook_Repo",
+                    "owner": "cs-sujeet-ahirrao",
+                    "per_page": "",
+                    "protected": false
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "list_branches",
+                "operationTitle": "List Branches",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "380",
+            "left": "840",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "f6881680-6470-4bf2-b5be-a048779a3981"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Branch",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "sha": "{{vars.steps.Get_Branch_Revision.data.object.sha}}",
+                    "repo": "Playbook_Repo",
+                    "owner": "cs-sujeet-ahirrao",
+                    "checkout_branch": "Branch SHA",
+                    "new_branch_name": "playbook1",
+                    "checkout_branch_sha": "4bb2a191653b67f12e1c915092f8b972207e82d9"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "create_branch",
+                "operationTitle": "Create Branch",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "720",
+            "left": "160",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "7f29af4c-6e2d-4fcd-acad-a317e86c4fae"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Branch Revision",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "base": "main",
+                    "repo": "Playbook_Repo",
+                    "owner": "cs-sujeet-ahirrao"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "get_branch_revision",
+                "operationTitle": "Get Branch Revision",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "600",
+            "left": "160",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "955a2d98-17bd-4341-98d3-6755cd8d05f3"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Fork",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "repo": "solution-pack-threat-intel-management",
+                    "owner": "fortinet-fortisoar",
+                    "organization": ""
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "fork_organization_repository",
+                "operationTitle": "Fork a Organization Repository",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "480",
+            "left": "560",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "8f35db0f-e9c5-4c9d-8a4d-3f17a6431a59"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Repo",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "name": "solution-pack-test",
+                    "branch": "develop",
+                    "private": false,
+                    "has_wiki": true,
+                    "homepage": "",
+                    "has_issues": true,
+                    "description": "",
+                    "has_projects": true,
+                    "other_fields": ""
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "create_user_repository",
+                "operationTitle": "Create User Repository",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "200",
+            "left": "120",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "024ce452-ef5f-466f-9fe1-9db2aecb2f0a"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Branch1",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "base": "develop",
+                    "repo": "solution-pack-test",
+                    "owner": "cs-sujeet-ahirrao",
+                    "checkout_branch": "Branch Name",
+                    "new_branch_name": "branch-CR2"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "create_branch",
+                "operationTitle": "Create Branch",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "320",
+            "left": "120",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "2ee8ee73-4447-4d01-88da-f3166e260a20"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "List User Repo",
+            "description": null,
+            "arguments": {
+                "name": "GitHub",
+                "config": "1c6ba20e-c429-469e-8b10-04d6300c8750",
+                "params": {
+                    "page": 1,
+                    "sort": "full_name",
+                    "type": "all",
+                    "per_page": 1000,
+                    "username": "cs-sujeet-ahirrao",
+                    "direction": "asc"
+                },
+                "version": "1.0.0",
+                "connector": "github",
+                "operation": "list_user_repositories",
+                "operationTitle": "List User Repositories",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "120",
+            "left": "280",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "uuid": "09c963b6-8e65-426f-9f29-22009c0b14a1"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Copy of Get Export Tempalte -> Get Export Tempalte",
+            "targetStep": "\/api\/3\/workflow_steps\/7cd2c814-fe0f-49ff-8fa2-78e311bc1714",
+            "sourceStep": "\/api\/3\/workflow_steps\/f2776bb2-9fa9-4988-adca-d52d7084119d",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "41476a96-433c-439b-8984-166857fa2fdf"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Export Tempalte -> Get Export Jobs",
+            "targetStep": "\/api\/3\/workflow_steps\/db8e8160-f77a-4d37-abb3-6b819c731578",
+            "sourceStep": "\/api\/3\/workflow_steps\/7cd2c814-fe0f-49ff-8fa2-78e311bc1714",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "c8c2405e-fa63-4192-9dd4-938349d9b9b5"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Config -> Copy of Get Export Tempalte",
+            "targetStep": "\/api\/3\/workflow_steps\/f2776bb2-9fa9-4988-adca-d52d7084119d",
+            "sourceStep": "\/api\/3\/workflow_steps\/9e6cb472-e155-4bd6-ba44-0eb9e8d0281b",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "182bea0b-2edf-4e81-b8c6-aff6faff848a"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Branch Revision -> Create Branch",
+            "targetStep": "\/api\/3\/workflow_steps\/7f29af4c-6e2d-4fcd-acad-a317e86c4fae",
+            "sourceStep": "\/api\/3\/workflow_steps\/955a2d98-17bd-4341-98d3-6755cd8d05f3",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "d1dcd8c3-eef0-4a70-8cc5-da751600b90e"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Repo -> Create Branch1",
+            "targetStep": "\/api\/3\/workflow_steps\/2ee8ee73-4447-4d01-88da-f3166e260a20",
+            "sourceStep": "\/api\/3\/workflow_steps\/024ce452-ef5f-466f-9fe1-9db2aecb2f0a",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "6676b11d-03a3-4855-9f83-849800f02acd"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Delete User Repo",
+            "targetStep": "\/api\/3\/workflow_steps\/bdb8a0d2-58a8-4ac1-86dc-0c30edd72b07",
+            "sourceStep": "\/api\/3\/workflow_steps\/625bec32-2bcf-4040-8414-dedc642a7146",
+            "label": null,
+            "isExecuted": false,
+            "uuid": "233f677c-a41f-4963-845e-8b7de47f90ec"
+        }
+    ],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "uuid": "50e24bb5-5be2-4026-8f3f-7ff0ca928cba",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": []
+}
